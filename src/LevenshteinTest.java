@@ -6,7 +6,7 @@ import org.junit.Test;
 public class LevenshteinTest {
 
 	@Test
-	public void getAnEditDistance() {
+	public void getASimpleEditDistance() {
 		String s1 = "Test1";
 		String s2 = "Test2";
 		assertNotNull(Levenshtein.editDistance(s1, s2));
@@ -49,6 +49,14 @@ public class LevenshteinTest {
 		String s1 = "a";
 		String s2 = "b";
 		assertEquals(2, Levenshtein.editDistance(s1, s2));
+	}
+	
+	@Test
+	public void canGetSimpleLevenshteinValues(){
+		String s1 = "a";
+		String s2 = "a";
+		int[][] lv = new int[2][2];
+		assertEquals(lv, Levenshtein.values(s1, s2));
 	}
 
 }
