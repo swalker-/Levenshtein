@@ -4,6 +4,13 @@ public class Levenshtein {
 	{
 		if (s1.equals(s2))
 			return 0;
-		return 1;
+		else
+		{
+			int length1 = s1.length();
+			int length2 = s2.length();
+			if (length1 > length2)
+				return length1-length2;
+			return 5;
+		}
 	}
 }
