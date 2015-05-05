@@ -10,6 +10,8 @@ public class Levenshtein {
 			int length2 = s2.length();
 			if (length1 > length2)
 				return length1-length2;
+			else if (length1 < length2)
+				return length2-length1;
 			return 5;
 		}
 	}
