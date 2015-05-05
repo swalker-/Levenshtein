@@ -52,10 +52,11 @@ public class LevenshteinTest {
 	}
 	
 	@Test
-	public void canGetSimpleLevenshteinValues(){
+	public void canGetSimpleLevenshteinMatrix(){
 		String s1 = "a";
 		String s2 = "a";
-		int[][] lv = new int[2][2];
+		int[][] lv = new int[][]{{0, 1},
+								 {1, 0}};
 		assertArrayEquals(lv, Levenshtein.values(s1, s2));
 	}
 

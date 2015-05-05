@@ -16,6 +16,7 @@ public class Levenshtein {
 		int length1 = s1.length();
 		int length2 = s2.length();
 		int[][] lValues = new int[length1+1][length2+1];
+		setupArray(lValues, length1, length2);
 		return lValues;
 	}
 	
