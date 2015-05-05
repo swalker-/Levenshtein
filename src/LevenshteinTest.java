@@ -59,5 +59,23 @@ public class LevenshteinTest {
 								 {1, 0}};
 		assertArrayEquals(lv, Levenshtein.values(s1, s2));
 	}
+	
+	@Test
+	public void canGetComplexLevenshteinMatrix() {
+		String s1 = "Intention";
+		String s2 = "Execution";
+		int[][] lv = new int[][]{{0,1,2,3,4,5,6,7,8,9},
+								 {1,2,3,4,5,6,7,6,7,8},
+								 {2,3,4,5,6,7,8,7,8,7},
+								 {3,4,5,6,7,8,7,8,9,8},
+								 {4,3,4,5,6,7,8,9,10,9},
+								 {5,4,5,6,7,8,9,10,11,10},
+								 {6,5,6,7,8,9,8,9,10,11},
+								 {7,6,7,8,9,10,9,8,9,10},
+								 {8,7,8,9,10,11,10,9,8,9},
+								 {9,8,9,10,11,12,11,10,9,8}};
+			
+		assertArrayEquals(lv, Levenshtein.values(s1, s2));
+	}
 
 }
