@@ -56,7 +56,7 @@ public class LevenshteinTest {
 		String s1 = "a";
 		String s2 = "a";
 		int[][] lv = new int[2][2];
-		assertEquals(lv, Levenshtein.values(s1, s2));
+		assertArrayEquals(lv, Levenshtein.values(s1, s2));
 	}
 
 }

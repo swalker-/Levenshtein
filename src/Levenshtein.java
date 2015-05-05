@@ -1,5 +1,6 @@
 
 public class Levenshtein {
+	
 	private static void setupArray(int[][] lValues, int length1, int length2)
 	{
 		for(int i=0; i<=length1; i++) {
