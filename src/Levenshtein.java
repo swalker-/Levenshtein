@@ -12,7 +12,8 @@ public class Levenshtein {
 				return length1-length2;
 			else if (length1 < length2)
 				return length2-length1;
-			return 5;
+			else
+				return 2;
 		}
 	}
 }

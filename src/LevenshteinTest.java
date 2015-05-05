@@ -43,5 +43,12 @@ public class LevenshteinTest {
 		assertEquals(1, Levenshtein.editDistance(s1, s2));
 		assertEquals(2, Levenshtein.editDistance(s1, s3));
 	}
+	
+	@Test
+	public void canDetectSubstitution() {
+		String s1 = "a";
+		String s2 = "b";
+		assertEquals(2, Levenshtein.editDistance(s1, s2));
+	}
 
 }
