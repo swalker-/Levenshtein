@@ -1,12 +1,12 @@
 
 public class Entry {
-	private boolean uVal, lVal, dVal;
+	private boolean u, l, d;
 	private int distance;
 	
 	public Entry() {
-		uVal=false;
-		lVal=false;
-		dVal=false;
+		u=false;
+		l=false;
+		d=false;
 		distance=0;
 	}
 	
@@ -18,36 +18,40 @@ public class Entry {
 		return distance;
 	}
 	
-	public void setUVal(boolean val) {
-		uVal = val;
+	public void setU(boolean val) {
+		u = val;
 	}
 
-	public char uVal() {
-		if(uVal) { return 'U'; }
-		return '-';
+	public boolean u() {
+		return u;
 	}
 	
-	public void setLVal(boolean val) {
-		lVal = val;
+	public void setL(boolean val) {
+		l = val;
 	}
 	
-	public char lVal() {
-		if(lVal) { return 'L'; }
-		return '-';
+	public boolean l() {
+		return l;
 	}
 	
-	public void setDVal(boolean val) {
-		dVal = val;
+	public void setD(boolean val) {
+		d = val;
 	}
 	
-	public char dVal() {
-		if(dVal) { return 'D'; }
-		return '-';
+	public boolean d() {
+		return d;
 	}
 	
-	public void setValues(boolean u, boolean l, boolean d) {
-		setUVal(u);
-		setLVal(l);
-		setDVal(d);
+	public String steps() {
+		String result = "";
+		result += (u) ? 'U' : '-';
+		result += (l) ? 'L' : '-';
+		result += (d) ? 'D' : '-';
+		return result;
+	}
+	public void setSteps(boolean u, boolean l, boolean d) {
+		setU(u);
+		setL(l);
+		setD(d);
 	}
 }

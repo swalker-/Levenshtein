@@ -25,14 +25,14 @@ public class Levenshtein {
 		for(int i=0; i<=length1; i++) {
 			Entry e = new Entry();
 			e.setDistance(i);
-			if(i > 0) { e.setLVal(true); }
+			if(i > 0) { e.setL(true); }
 			table.setEntry(i, 0, e);
 			
 		}
 		for(int j=0; j<=length2; j++) {
 			Entry e = new Entry();
 			e.setDistance(j);
-			if(j > 0) { e.setUVal(true); }
+			if(j > 0) { e.setU(true); }
 			table.setEntry(0, j, e);
 		}
 	}
@@ -63,9 +63,9 @@ public class Levenshtein {
 				int smallestValue = smallestValue(insertionValue, deletionValue, substitutionValue);
 				Entry entry = new Entry();
 				entry.setDistance(smallestValue);
-				if(insertionValue == smallestValue) 	{ entry.setUVal(true); }
-				if(deletionValue == smallestValue) 		{ entry.setLVal(true); }
-				if(substitutionValue == smallestValue)	{ entry.setDVal(true); }
+				if(insertionValue == smallestValue) 	{ entry.setU(true); }
+				if(deletionValue == smallestValue) 		{ entry.setL(true); }
+				if(substitutionValue == smallestValue)	{ entry.setD(true); }
 				table.setEntry(i, j, entry);
 			}
 		}
@@ -91,62 +91,51 @@ public class Levenshtein {
 	}
 	
 	public String getSteps(int row, int col) {
-		String steps = "";
 		Entry entry = table.getEntry(row, col);
-		steps += entry.uVal();
-		steps += entry.lVal();
-		steps += entry.dVal();
-		return steps;
+		return entry.steps();
 	}
 	
-	/* This is wrong. Come back to it later.
-	public List<Character> backtrace() {
-		List<Character> backtrace = new ArrayList<Character>();
-		int row = length2;
-		int col = length1;
-		int u = -1, l = -1, d = -1, current;
-		
-		// Calculate value of potential movements through table
-		while(row!=0 || col!=0) {
-			current = table[col][row];
-			u = (row > 0) ? current-table[col][row-1] : -1;  
-			l = (col > 0) ? current-table[col-1][row] : -1;
-			d = (row > 0 && col > 0) ? current-table[col-1][row-1] : -1;
-			if(row > 0 && col > 0) {
-				d = current-table[col-1][row-1];
-			}
-			
-			// If diagonal value is the same (matching characters),
-			// we always move diagonally
-			if(d == 0) {
-				backtrace.add('D');
-				col--;
-				row--;
-			}
-			else {
-				// Largest difference between current position
-				// and potential position is chosen.
-				// (Instead of making a new greatestValue method
-				// I used negative values with smallestValue)
-				int stepBackValue = -smallestValue(-u, -l, -d);
-				if(u == stepBackValue) {
-					backtrace.add('U');
-					row--;
-				}
-				else if(l == stepBackValue) {
-					backtrace.add('L');
-					col--;
-				}
-				else {
-					backtrace.add('D');
-					row--;
-					col--;
-				}
-			}
+	private void getBT(BTNode node, int row, int col) {
+		BTNode uNode = node.uChild();
+		BTNode lNode = node.lChild();
+		BTNode dNode = node.dChild();
+		if(uNode != null) {
+			Entry current = table.getEntry(row, col-1);
+			if(current.u()) { uNode.addUChild(new BTNode('U')); }
+			if(current.l()) { uNode.addLChild(new BTNode('L')); }
+			if(current.d()) { uNode.addDChild(new BTNode('D')); }
+			getBT(uNode, row, col-1);
 		}
-		return backtrace;
+		if(lNode != null) {
+			Entry current = table.getEntry(row-1, col);
+			if(current.u()) { lNode.addUChild(new BTNode('U')); }
+			if(current.l()) { lNode.addLChild(new BTNode('L')); }
+			if(current.d()) { lNode.addDChild(new BTNode('D')); }
+			getBT(lNode, row-1, col);
+		}
+		if(dNode != null) {
+			Entry current = table.getEntry(row-1, col-1);
+			if(current.u()) { dNode.addUChild(new BTNode('U')); }
+			if(current.l()) { dNode.addLChild(new BTNode('L')); }
+			if(current.d()) { dNode.addDChild(new BTNode('D')); }
+			getBT(dNode, row-1, col-1);
+		}
 	}
-	*/
+	
+	// This is wrong. Come back to it later.
+	public List<String> backtrace() {
+		BTTree backtrace = new BTTree();
+		BTNode root = backtrace.root();
+		Entry start = table.getEntry(length1, length2);
+		if(start.u()) { root.addUChild(new BTNode('U')); }
+		if(start.l()) { root.addLChild(new BTNode('L')); }
+		if(start.d()) { root.addDChild(new BTNode('D')); }
+		
+		getBT(root, length1, length2);
+		
+		return backtrace.backtraces();
+	}
+	
 }
 
 

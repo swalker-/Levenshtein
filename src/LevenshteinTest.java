@@ -109,19 +109,19 @@ public class LevenshteinTest {
 	}
 	
 	
-	/* Incorrect implementation. Need to add more
+	// Incorrect implementation. Need to add more
 	@Test
 	public void canGetBackTrace() {
 		String s1 = "lucky";
 		String s2 = "unlucky";
 		Levenshtein l1 = new Levenshtein(s1, s2);
-		List<Character> eBacktrace = new ArrayList<Character>(); 
-		for(int i=0; i<5; i++) {
-			eBacktrace.add('D');
+		List<String> eBacktrace = new ArrayList<String>(); 
+		eBacktrace.add("DDDDDUU");
+		List<String> aBacktrace = l1.backtrace();
+		
+		for(String s : eBacktrace) {
+			System.out.println("Trace: " + s);
 		}
-		eBacktrace.add('U');
-		eBacktrace.add('U');
-		List<Character> aBacktrace = l1.backtrace();
 		
 		assertEquals(eBacktrace.size(), aBacktrace.size());
 		for(int i=0; i<eBacktrace.size(); i++)
@@ -129,5 +129,5 @@ public class LevenshteinTest {
 			assertEquals(eBacktrace.get(i), aBacktrace.get(i));
 		}
 	}
-	*/
+	
 }
