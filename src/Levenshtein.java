@@ -33,10 +33,8 @@ public class Levenshtein {
 	private int smallestValue(int v1, int v2, int v3)
 	{
 		int smallest = v1;
-		if(v2 < smallest)
-			smallest = v2;
-		if(v3 < smallest)
-			smallest = v3;
+		if(v2 < smallest) { smallest = v2; }
+		if(v3 < smallest) { smallest = v3; }
 		return smallest;
 	}
 	
@@ -46,7 +44,7 @@ public class Levenshtein {
 		int deletionValue;
 		int substitutionValue;
 		
-		for(int i=1; i<= length1; i++) {
+		for(int i=1; i<=length1; i++) {
 			for(int j=1; j<=length2; j++) {
 				insertionValue = table[i][j-1] + 1;
 				deletionValue = table[i-1][j] + 1;
@@ -77,43 +75,41 @@ public class Levenshtein {
 		int row = length2;
 		int col = length1;
 		int u = -1, l = -1, d = -1, current;
+		
+		// Calculate value of potential movements through table
 		while(row!=0 || col!=0) {
 			current = table[col][row];
-			u = -1; l = -1; d = -1;
-			if(row>0) {
-				u = current - table[col][row-1];
-			}
-			if(col>0) {
-				l = current - table[col-1][row];
-			}
-			if(row>0 && col>0) {
-				d = current - table[col-1][row-1];
+			u = (row > 0) ? current-table[col][row-1] : -1;  
+			l = (col > 0) ? current-table[col-1][row] : -1;
+			d = (row > 0 && col > 0) ? current-table[col-1][row-1] : -1;
+			if(row > 0 && col > 0) {
+				d = current-table[col-1][row-1];
 			}
 			
+			// If diagonal value is the same (matching characters),
+			// we always move diagonally
 			if(d == 0) {
 				backtrace.add('D');
 				col--;
 				row--;
 			}
 			else {
-				if(u>l) {
-					if(u>d) {
-						backtrace.add('U');
-					}
-					else {
-						backtrace.add('D');
-						col--;
-					}
+				// Largest difference between current position
+				// and potential position is chosen.
+				// (Instead of making a new greatestValue method
+				// I used negative values with smallestValue)
+				int stepBackValue = -smallestValue(-u, -l, -d);
+				if(u == stepBackValue) {
+					backtrace.add('U');
 					row--;
 				}
+				else if(l == stepBackValue) {
+					backtrace.add('L');
+					col--;
+				}
 				else {
-					if(l>d) {
-						backtrace.add('L');
-					}
-					else {
-						backtrace.add('D');
-						row--;
-					}
+					backtrace.add('D');
+					row--;
 					col--;
 				}
 			}
