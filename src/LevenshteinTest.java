@@ -1,7 +1,5 @@
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -91,12 +89,10 @@ public class LevenshteinTest {
 	
 	@Test
 	public void canGetStrings() {
-		ArrayList<String> eStrings = new ArrayList<String>();
-		eStrings.add(s1);
-		eStrings.add(s2);
-		ArrayList<String> aStrings = l2.strings();
-		for(int i=0; i<eStrings.size(); i++) {
-			assertEquals(eStrings.get(i), aStrings.get(i));
+		String[] eStrings = {s1, s2};
+		String[] aStrings = l2.strings();
+		for(int i=0; i<eStrings.length; i++) {
+			assertEquals(eStrings[i], aStrings[i]);
 		}
 	}
 	

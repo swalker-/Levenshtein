@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 
 public class Levenshtein {
 	
@@ -59,10 +57,8 @@ public class Levenshtein {
 		}
 	}
 	
-	public ArrayList<String> strings() {
-		ArrayList<String> strings = new ArrayList<String>();
-		strings.add(string1);
-		strings.add(string2);
+	public String[] strings() {
+		String[] strings = {string1, string2};
 		return strings;
 	}
 	
