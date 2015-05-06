@@ -1,5 +1,8 @@
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -98,7 +101,22 @@ public class LevenshteinTest {
 	
 	@Test
 	public void canGetBackTrace() {
+		String s1 = "lucky";
+		String s2 = "unlucky";
+		Levenshtein l1 = new Levenshtein(s1, s2);
+		List<Character> eBacktrace = new ArrayList<Character>(); 
+		for(int i=0; i<5; i++) {
+			eBacktrace.add('D');
+		}
+		eBacktrace.add('U');
+		eBacktrace.add('U');
+		List<Character> aBacktrace = l1.backtrace();
 		
+		assertEquals(eBacktrace.size(), aBacktrace.size());
+		for(int i=0; i<eBacktrace.size(); i++)
+		{
+			assertEquals(eBacktrace.get(i), aBacktrace.get(i));
+		}
 	}
 
 }

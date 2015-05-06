@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Levenshtein {
 	
@@ -15,7 +18,6 @@ public class Levenshtein {
 		table = new int[length1+1][length2+1];
 		setupMatrix();
 		calculateMatrix();
-		
 	}
 	
 	private void setupMatrix()
@@ -68,6 +70,55 @@ public class Levenshtein {
 	
 	public int editDistance() {
 		return table[length1][length2];
+	}
+	
+	public List<Character> backtrace() {
+		List<Character> backtrace = new ArrayList<Character>();
+		int row = length2;
+		int col = length1;
+		int u = -1, l = -1, d = -1, current;
+		while(row!=0 || col!=0) {
+			current = table[col][row];
+			u = -1; l = -1; d = -1;
+			if(row>0) {
+				u = current - table[col][row-1];
+			}
+			if(col>0) {
+				l = current - table[col-1][row];
+			}
+			if(row>0 && col>0) {
+				d = current - table[col-1][row-1];
+			}
+			
+			if(d == 0) {
+				backtrace.add('D');
+				col--;
+				row--;
+			}
+			else {
+				if(u>l) {
+					if(u>d) {
+						backtrace.add('U');
+					}
+					else {
+						backtrace.add('D');
+						col--;
+					}
+					row--;
+				}
+				else {
+					if(l>d) {
+						backtrace.add('L');
+					}
+					else {
+						backtrace.add('D');
+						row--;
+					}
+					col--;
+				}
+			}
+		}
+		return backtrace;
 	}
 }
 
