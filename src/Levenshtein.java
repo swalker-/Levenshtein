@@ -70,6 +70,7 @@ public class Levenshtein {
 		return table[length1][length2];
 	}
 	
+	// This is wrong. Come back to it later.
 	public List<Character> backtrace() {
 		List<Character> backtrace = new ArrayList<Character>();
 		int row = length2;
