@@ -68,7 +68,7 @@ public class LevenshteinTest {
 	public void canGetSimpleLevenshteinMatrix(){
 		int[][] lv = new int[][]{{0, 1},
 								 {1, 0}};
-		assertArrayEquals(lv, l1.table());
+		assertArrayEquals(lv, l1.distanceTable());
 	}
 	
 	@Test
@@ -87,7 +87,7 @@ public class LevenshteinTest {
 								 {8,7,8,9,10,11,10,9,8,9},
 								 {9,8,9,10,11,12,11,10,9,8}};
 			
-		assertArrayEquals(lv, l1.table());
+		assertArrayEquals(lv, l1.distanceTable());
 	}
 	
 	@Test
@@ -99,6 +99,17 @@ public class LevenshteinTest {
 		}
 	}
 	
+	@Test
+	public void canRetrieveSteps() {
+		String s1 = "lucky";
+		String s2 = "unlucky";
+		Levenshtein l1 = new Levenshtein(s1, s2);
+		assertEquals("--D", l1.getSteps(1,3));
+		assertEquals("ULD", l1.getSteps(3,3));
+	}
+	
+	
+	/* Incorrect implementation. Need to add more
 	@Test
 	public void canGetBackTrace() {
 		String s1 = "lucky";
@@ -118,5 +129,5 @@ public class LevenshteinTest {
 			assertEquals(eBacktrace.get(i), aBacktrace.get(i));
 		}
 	}
-
+	*/
 }
