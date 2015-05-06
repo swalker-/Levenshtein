@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Levenshtein {
 	
@@ -57,13 +59,18 @@ public class Levenshtein {
 		}
 	}
 	
-	public int[][] values()
-	{
+	public ArrayList<String> strings() {
+		ArrayList<String> strings = new ArrayList<String>();
+		strings.add(string1);
+		strings.add(string2);
+		return strings;
+	}
+	
+	public int[][] values() {
 		return lValues;
 	}
 	
-	public int editDistance()
-	{
+	public int editDistance() {
 		return lValues[length1][length2];
 	}
 }
