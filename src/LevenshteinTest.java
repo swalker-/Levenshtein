@@ -67,7 +67,7 @@ public class LevenshteinTest {
 	public void canGetSimpleLevenshteinMatrix(){
 		int[][] lv = new int[][]{{0, 1},
 								 {1, 0}};
-		assertArrayEquals(lv, l1.values());
+		assertArrayEquals(lv, l1.table());
 	}
 	
 	@Test
@@ -86,7 +86,7 @@ public class LevenshteinTest {
 								 {8,7,8,9,10,11,10,9,8,9},
 								 {9,8,9,10,11,12,11,10,9,8}};
 			
-		assertArrayEquals(lv, l1.values());
+		assertArrayEquals(lv, l1.table());
 	}
 	
 	@Test
@@ -100,6 +100,9 @@ public class LevenshteinTest {
 		}
 	}
 	
-	//TODO: Backtrace
+	@Test
+	public void canGetBackTrace() {
+		
+	}
 
 }
