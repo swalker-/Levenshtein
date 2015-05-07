@@ -109,7 +109,6 @@ public class LevenshteinTest {
 	}
 	
 	
-	// Incorrect implementation. Need to add more
 	@Test
 	public void canGetBackTrace() {
 		String s1 = "lucky";
