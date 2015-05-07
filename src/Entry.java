@@ -22,7 +22,7 @@ public class Entry {
 		u = val;
 	}
 
-	public boolean u() {
+	public boolean hasU() {
 		return u;
 	}
 	
@@ -30,7 +30,7 @@ public class Entry {
 		l = val;
 	}
 	
-	public boolean l() {
+	public boolean hasL() {
 		return l;
 	}
 	
@@ -38,7 +38,7 @@ public class Entry {
 		d = val;
 	}
 	
-	public boolean d() {
+	public boolean hasD() {
 		return d;
 	}
 	

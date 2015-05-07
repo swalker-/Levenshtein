@@ -1,16 +1,16 @@
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.HashMap;
+import java.util.Map;
 
 public class BTNode {
 	private char step;
-	private BTNode uChild, lChild, dChild;
+	private Map<Character, BTNode> children;
 	
 	public BTNode(char step) {
 		this.step = step;
-		uChild = null;
-		lChild = null;
-		dChild = null;
+		children = new HashMap<Character, BTNode>();
+		children.put('U', null);
+		children.put('L', null);
+		children.put('D', null);
 	}
 	
 	public char step() {
@@ -18,26 +18,43 @@ public class BTNode {
 	}
 
 	public void addUChild(BTNode u) {
-		uChild = u;
+		children.put('U', u);
 	}
 	
 	public BTNode uChild() {
-		return uChild;
+		return children.get('U');
 	}
 	
 	public void addLChild(BTNode l) {
-		lChild = l;
-	}
+		children.put('L', l);
+	}	
 	
 	public BTNode lChild() {
-		return lChild;
+		return children.get('L');
 	}
 	
 	public void addDChild(BTNode d) {
-		dChild = d;
+		children.put('D', d);
+	}
+	
+	public boolean hasChild(char c) {
+		switch(c) {
+		case('U'):
+			return (children.get('U') != null);
+		case('L'):
+			return (children.get('L') != null);
+		case('D'):
+			return (children.get('D') != null);
+		default:
+			return false;
+		}
 	}
 	
 	public BTNode dChild() {
-		return dChild;
+		return children.get('D');
+	}
+	
+	public Map<Character, BTNode> children() {
+		return children;
 	}
 }

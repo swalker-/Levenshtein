@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class BTTree {
@@ -14,16 +15,20 @@ public class BTTree {
 	}	
 	
 	public List<String> backtraces() {
-		List<String> paths = new ArrayList<String>();
-		paths(paths, root, "");
-		return paths;
+		List<String> bts = new ArrayList<String>();
+		findBTs(bts, root, "");
+		return bts;
 	}
 	
-	private void paths(List<String> l, BTNode node, String str) {
+	private void findBTs(List<String> bts, BTNode node, String str) {
 		if(node.step() != ' ') { str+=node.step(); }
-		if(node.uChild() != null) { paths(l, node.uChild(), str); }
-		if(node.lChild() != null) { paths(l, node.lChild(), str); }
-		if(node.dChild() != null) { paths(l, node.dChild(), str); }
-		if(node.uChild() == null && node.lChild() == null && node.dChild() == null) { l.add(str); }
+		boolean endOfPath = true;
+		for(Map.Entry<Character, BTNode> entry : node.children().entrySet()) {
+			if(node.hasChild(entry.getKey())) {
+				findBTs(bts, entry.getValue(), str);
+				endOfPath = false;
+			}
+		}
+		if(endOfPath) { bts.add(str); }
 	}
 }

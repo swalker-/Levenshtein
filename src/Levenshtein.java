@@ -1,5 +1,5 @@
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class Levenshtein {
@@ -27,7 +27,6 @@ public class Levenshtein {
 			e.setDistance(i);
 			if(i > 0) { e.setL(true); }
 			table.setEntry(i, 0, e);
-			
 		}
 		for(int j=0; j<=length2; j++) {
 			Entry e = new Entry();
@@ -96,40 +95,28 @@ public class Levenshtein {
 	}
 	
 	private void getBT(BTNode node, int row, int col) {
-		BTNode uNode = node.uChild();
-		BTNode lNode = node.lChild();
-		BTNode dNode = node.dChild();
-		if(uNode != null) {
-			Entry current = table.getEntry(row, col-1);
-			if(current.u()) { uNode.addUChild(new BTNode('U')); }
-			if(current.l()) { uNode.addLChild(new BTNode('L')); }
-			if(current.d()) { uNode.addDChild(new BTNode('D')); }
-			getBT(uNode, row, col-1);
-		}
-		if(lNode != null) {
-			Entry current = table.getEntry(row-1, col);
-			if(current.u()) { lNode.addUChild(new BTNode('U')); }
-			if(current.l()) { lNode.addLChild(new BTNode('L')); }
-			if(current.d()) { lNode.addDChild(new BTNode('D')); }
-			getBT(lNode, row-1, col);
-		}
-		if(dNode != null) {
-			Entry current = table.getEntry(row-1, col-1);
-			if(current.u()) { dNode.addUChild(new BTNode('U')); }
-			if(current.l()) { dNode.addLChild(new BTNode('L')); }
-			if(current.d()) { dNode.addDChild(new BTNode('D')); }
-			getBT(dNode, row-1, col-1);
+		for(Map.Entry<Character, BTNode> entry : node.children().entrySet()) {
+			if(node.hasChild(entry.getKey())) {
+				int eRow = row;
+				int eCol = col;
+				if(entry.getKey() != 'L') { eCol--; }
+				if(entry.getKey() != 'U') { eRow--; }
+				Entry current = table.getEntry(eRow, eCol);
+				if(current.hasU()) { entry.getValue().addUChild(new BTNode('U')); }
+				if(current.hasL()) { entry.getValue().addLChild(new BTNode('L')); }
+				if(current.hasD()) { entry.getValue().addDChild(new BTNode('D')); }
+				getBT(entry.getValue(), eRow, eCol);
+			}
 		}
 	}
 	
-	// This is wrong. Come back to it later.
 	public List<String> backtrace() {
 		BTTree backtrace = new BTTree();
 		BTNode root = backtrace.root();
 		Entry start = table.getEntry(length1, length2);
-		if(start.u()) { root.addUChild(new BTNode('U')); }
-		if(start.l()) { root.addLChild(new BTNode('L')); }
-		if(start.d()) { root.addDChild(new BTNode('D')); }
+		if(start.hasU()) { root.addUChild(new BTNode('U')); }
+		if(start.hasL()) { root.addLChild(new BTNode('L')); }
+		if(start.hasD()) { root.addDChild(new BTNode('D')); }
 		
 		getBT(root, length1, length2);
 		
