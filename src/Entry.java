@@ -42,13 +42,6 @@ public class Entry {
 		return d;
 	}
 	
-	public String steps() {
-		String result = "";
-		result += (u) ? 'U' : '-';
-		result += (l) ? 'L' : '-';
-		result += (d) ? 'D' : '-';
-		return result;
-	}
 	public void setSteps(boolean u, boolean l, boolean d) {
 		setU(u);
 		setL(l);

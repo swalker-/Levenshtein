@@ -89,11 +89,6 @@ public class Levenshtein {
 		return table.getEntry(length1, length2).distance();
 	}
 	
-	public String getSteps(int row, int col) {
-		Entry entry = table.getEntry(row, col);
-		return entry.steps();
-	}
-	
 	private void getBT(BTNode node, int row, int col) {
 		for(Map.Entry<Character, BTNode> entry : node.children().entrySet()) {
 			if(node.hasChild(entry.getKey())) {

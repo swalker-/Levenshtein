@@ -100,16 +100,6 @@ public class LevenshteinTest {
 	}
 	
 	@Test
-	public void canRetrieveSteps() {
-		String s1 = "lucky";
-		String s2 = "unlucky";
-		Levenshtein l1 = new Levenshtein(s1, s2);
-		assertEquals("--D", l1.getSteps(1,3));
-		assertEquals("ULD", l1.getSteps(3,3));
-	}
-	
-	
-	@Test
 	public void canGetBackTrace() {
 		String s1 = "lucky";
 		String s2 = "unlucky";
