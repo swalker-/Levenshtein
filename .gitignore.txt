@@ -1,1 +1,1 @@
-Levenshtein.txt
+bin/*
