@@ -16,11 +16,11 @@ public class Levenshtein {
 		length1 = string1.length();
 		length2 = string2.length();
 		table = new Entry[length1+1][length2+1];
-		setupMatrix();
-		calculateMatrix();
+		setupTable();
+		calculateTable();
 	}
 	
-	private void setupMatrix()
+	private void setupTable()
 	{
 		for(int i=0; i<=length1; i++) {
 			Entry e = new Entry();
@@ -44,7 +44,7 @@ public class Levenshtein {
 		return smallest;
 	}
 	
-	private void calculateMatrix()
+	private void calculateTable()
 	{
 		int insertionValue;
 		int deletionValue;
