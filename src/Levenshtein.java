@@ -1,8 +1,9 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 
-public class Levenshtein {
+public final class Levenshtein {
 	
 	private final int length1;
 	private final int length2;
@@ -23,15 +24,17 @@ public class Levenshtein {
 	private void setupTable()
 	{
 		for(int i=0; i<=length1; i++) {
-			Entry e = new Entry();
-			e.setDistance(i);
-			if(i > 0) { e.setL(true); }
+			Entry e;
+			List<Character> steps = new ArrayList<Character>();
+			if(i > 0) { steps.add('l'); }
+			e = new Entry(i, steps);
 			table[i][0] = e;
 		}
 		for(int j=0; j<=length2; j++) {
-			Entry e = new Entry();
-			e.setDistance(j);
-			if(j > 0) { e.setU(true); }
+			Entry e;
+			List<Character> steps = new ArrayList<Character>();
+			if(j > 0) { steps.add('u'); }
+			e = new Entry(j, steps);
 			table[0][j] = e;
 		}
 	}
@@ -60,11 +63,12 @@ public class Levenshtein {
 				}
 				
 				int smallestValue = smallestValue(insertionValue, deletionValue, substitutionValue);
-				Entry entry = new Entry();
-				entry.setDistance(smallestValue);
-				if(insertionValue == smallestValue) 	{ entry.setU(true); }
-				if(deletionValue == smallestValue) 		{ entry.setL(true); }
-				if(substitutionValue == smallestValue)	{ entry.setD(true); }
+				Entry entry;
+				List<Character> steps = new ArrayList<Character>();
+				if(insertionValue == smallestValue) 	{ steps.add('u'); }
+				if(deletionValue == smallestValue) 		{ steps.add('l'); }
+				if(substitutionValue == smallestValue)	{ steps.add('d'); }
+				entry = new Entry(smallestValue, steps);
 				table[i][j] = entry;
 			}
 		}
