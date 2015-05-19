@@ -2,13 +2,11 @@ import java.util.List;
 
 
 public final class Entry {
-	private final boolean u, l, d;
+	private final List<Character> steps;
 	private final int distance;
 	
 	public Entry(int distance, List<Character> steps) {
-		u = steps.contains('u');
-		l = steps.contains('l');
-		d = steps.contains('d');
+		this.steps = steps;
 		this.distance=distance;
 	}
 	
@@ -17,15 +15,15 @@ public final class Entry {
 	}
 	
 	public boolean hasU() {
-		return u;
+		return steps.contains('U');
 	}
 	
 	public boolean hasL() {
-		return l;
+		return steps.contains('L');
 	}
 	
 	
 	public boolean hasD() {
-		return d;
+		return steps.contains('D');
 	}
 }

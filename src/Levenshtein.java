@@ -27,14 +27,14 @@ public final class Levenshtein {
 		for(int i=0; i<=length1; i++) {
 			Entry e;
 			List<Character> steps = new ArrayList<Character>();
-			if(i > 0) { steps.add('l'); }
+			if(i > 0) { steps.add('L'); }
 			e = new Entry(i, steps);
 			table[i][0] = e;
 		}
 		for(int j=0; j<=length2; j++) {
 			Entry e;
 			List<Character> steps = new ArrayList<Character>();
-			if(j > 0) { steps.add('u'); }
+			if(j > 0) { steps.add('U'); }
 			e = new Entry(j, steps);
 			table[0][j] = e;
 		}
@@ -70,9 +70,9 @@ public final class Levenshtein {
 		int smallestValue = smallestValue(values.get("insertion"), values.get("deletion"), values.get("substitution"));
 		Entry entry;
 		List<Character> steps = new ArrayList<Character>();
-		if(values.get("insertion") == smallestValue) 	{ steps.add('u'); }
-		if(values.get("deletion") == smallestValue) 	{ steps.add('l'); }
-		if(values.get("substitution") == smallestValue)	{ steps.add('d'); }
+		if(values.get("insertion") == smallestValue) 	{ steps.add('U'); }
+		if(values.get("deletion") == smallestValue) 	{ steps.add('L'); }
+		if(values.get("substitution") == smallestValue)	{ steps.add('D'); }
 		entry = new Entry(smallestValue, steps);
 		return entry;
 	}
