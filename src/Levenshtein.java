@@ -104,22 +104,16 @@ public final class Levenshtein {
 				if(child.step() != 'U') { eRow--; }
 				Entry current = table[eRow][eCol];
 				if(current.hasU()) { 
-					updateChild(child, 'U');
+					child.addChild(new BTNode('U', new ArrayList<BTNode>()));
 				}
 				if(current.hasL()) { 
-					updateChild(child, 'L');
+					child.addChild(new BTNode('L', new ArrayList<BTNode>()));
 				}
 				if(current.hasD()) { 
-					updateChild(child, 'D');
+					child.addChild(new BTNode('D', new ArrayList<BTNode>()));
 				}
 				getBT(child, eRow, eCol);
 		}
-	}
-	
-	private void updateChild(BTNode node, char step) {
-		List<BTNode> steps = node.children();
-		steps.add(new BTNode(step, new ArrayList<BTNode>()));
-		node = new BTNode(node.step(), steps);
 	}
 	
 	public List<String> backtrace() {

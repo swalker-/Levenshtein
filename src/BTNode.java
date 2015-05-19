@@ -14,16 +14,20 @@ public final class BTNode {
 	}
 
 	public BTNode uChild() {
-		return children.get('U');
+		return getChild('U');
 	}
-	
-
 	
 	public BTNode lChild() {
-		return children.get('L');
+		return getChild('L');
 	}
 	
-
+	public BTNode dChild() {
+		return getChild('D');
+	}
+	
+	public void addChild(BTNode child) {
+		children.add(child);
+	}
 	
 	public boolean hasChild(char c) {
 		for(BTNode child : children) {
@@ -32,8 +36,11 @@ public final class BTNode {
 		return false;
 	}
 	
-	public BTNode dChild() {
-		return children.get('D');
+	private BTNode getChild(char c) {
+		for(BTNode child : children) {
+			if(child.step() == c) { return child; }
+		}
+		return null;
 	}
 	
 	public List<BTNode> children() {
