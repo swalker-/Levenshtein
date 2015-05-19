@@ -97,29 +97,29 @@ public final class Levenshtein {
 	}
 	
 	private void getBT(BTNode node, int row, int col) {
-		for(BTNode entry : node.children()) {
+		for(BTNode child : node.children()) {
 				int eRow = row;
 				int eCol = col;
-				if(entry.step() != 'L') { eCol--; }
-				if(entry.step() != 'U') { eRow--; }
+				if(child.step() != 'L') { eCol--; }
+				if(child.step() != 'U') { eRow--; }
 				Entry current = table[eRow][eCol];
 				if(current.hasU()) { 
-					List<BTNode> steps = entry.children();
-					steps.add(new BTNode('U', new ArrayList<BTNode>()));
-					entry = new BTNode(entry.step(), steps);
+					updateChild(child, 'U');
 				}
 				if(current.hasL()) { 
-					List<BTNode> steps = entry.children();
-					steps.add(new BTNode('L', new ArrayList<BTNode>()));
-					entry = new BTNode(entry.step(), steps);
+					updateChild(child, 'L');
 				}
 				if(current.hasD()) { 
-					List<BTNode> steps = entry.children();
-					steps.add(new BTNode('D', new ArrayList<BTNode>()));
-					entry = new BTNode(entry.step(), steps);
+					updateChild(child, 'D');
 				}
-				getBT(entry, eRow, eCol);
+				getBT(child, eRow, eCol);
 		}
+	}
+	
+	private void updateChild(BTNode node, char step) {
+		List<BTNode> steps = node.children();
+		steps.add(new BTNode(step, new ArrayList<BTNode>()));
+		node = new BTNode(node.step(), steps);
 	}
 	
 	public List<String> backtrace() {
