@@ -97,31 +97,42 @@ public final class Levenshtein {
 	}
 	
 	private void getBT(BTNode node, int row, int col) {
-		for(Map.Entry<Character, BTNode> entry : node.children().entrySet()) {
-			if(node.hasChild(entry.getKey())) {
+		for(BTNode entry : node.children()) {
 				int eRow = row;
 				int eCol = col;
-				if(entry.getKey() != 'L') { eCol--; }
-				if(entry.getKey() != 'U') { eRow--; }
+				if(entry.step() != 'L') { eCol--; }
+				if(entry.step() != 'U') { eRow--; }
 				Entry current = table[eRow][eCol];
-				if(current.hasU()) { entry.getValue().addUChild(new BTNode('U')); }
-				if(current.hasL()) { entry.getValue().addLChild(new BTNode('L')); }
-				if(current.hasD()) { entry.getValue().addDChild(new BTNode('D')); }
-				getBT(entry.getValue(), eRow, eCol);
-			}
+				if(current.hasU()) { 
+					List<BTNode> steps = entry.children();
+					steps.add(new BTNode('U', new ArrayList<BTNode>()));
+					entry = new BTNode(entry.step(), steps);
+				}
+				if(current.hasL()) { 
+					List<BTNode> steps = entry.children();
+					steps.add(new BTNode('L', new ArrayList<BTNode>()));
+					entry = new BTNode(entry.step(), steps);
+				}
+				if(current.hasD()) { 
+					List<BTNode> steps = entry.children();
+					steps.add(new BTNode('D', new ArrayList<BTNode>()));
+					entry = new BTNode(entry.step(), steps);
+				}
+				getBT(entry, eRow, eCol);
 		}
 	}
 	
 	public List<String> backtrace() {
-		BTTree backtrace = new BTTree();
-		BTNode root = backtrace.root();
+		BTNode root;
 		Entry start = table[length1][length2];
-		if(start.hasU()) { root.addUChild(new BTNode('U')); }
-		if(start.hasL()) { root.addLChild(new BTNode('L')); }
-		if(start.hasD()) { root.addDChild(new BTNode('D')); }
-		
+		List<BTNode> steps = new ArrayList<BTNode>();
+		if(start.hasU()) { steps.add(new BTNode('U', new ArrayList<BTNode>())); }
+		if(start.hasL()) { steps.add(new BTNode('L', new ArrayList<BTNode>())); }
+		if(start.hasD()) { steps.add(new BTNode('D', new ArrayList<BTNode>())); }
+		root = new BTNode(' ', steps);
 		getBT(root, length1, length2);
 		
+		BTTree backtrace = new BTTree(root);
 		return backtrace.backtraces();
 	}
 	

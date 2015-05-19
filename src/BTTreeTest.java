@@ -10,18 +10,25 @@ public class BTTreeTest {
 
 	@Test
 	public void canProduceList() {
-		BTTree tree = new BTTree();
-		BTNode node = tree.root();
-		BTNode node1 = new BTNode('U');
-		BTNode node2 = new BTNode('L');
-		BTNode node11 = new BTNode('U');
-		BTNode node12 = new BTNode('D');
-		BTNode node21 = new BTNode('U');
-		node.addUChild(node1);
-		node.addLChild(node2);
-		node1.addUChild(node11);
-		node1.addDChild(node12);
-		node2.addUChild(node21);
+		BTNode node11 = new BTNode('U', new ArrayList<BTNode>());
+		BTNode node12 = new BTNode('D', new ArrayList<BTNode>());
+		BTNode node21 = new BTNode('U', new ArrayList<BTNode>());
+		
+		List<BTNode> node1Children = new ArrayList<BTNode>();
+		node1Children.add(node11);
+		node1Children.add(node12);
+		BTNode node1 = new BTNode('U', node1Children);
+		
+		List<BTNode> node2Children = new ArrayList<BTNode>();
+		node2Children.add(node21);
+		BTNode node2 = new BTNode('L', node2Children);
+		
+		List<BTNode> rootChildren = new ArrayList<BTNode>();
+		rootChildren.add(node1);
+		rootChildren.add(node2);
+		BTNode root = new BTNode(' ', rootChildren);
+		
+		BTTree tree = new BTTree(root);
 		
 		List<String> expectedPaths = new ArrayList<String>();
 		expectedPaths.add("UU");

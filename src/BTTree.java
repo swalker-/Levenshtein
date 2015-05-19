@@ -1,13 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public class BTTree {
 	private BTNode root;
 	
-	public BTTree() {
-		root = new BTNode(' ');
+	public BTTree(BTNode root) {
+		this.root = root;
 	}
 	
 	public BTNode root() {
@@ -23,9 +22,9 @@ public class BTTree {
 	private void findBTs(List<String> bts, BTNode node, String str) {
 		if(node.step() != ' ') { str+=node.step(); }
 		boolean endOfPath = true;
-		for(Map.Entry<Character, BTNode> entry : node.children().entrySet()) {
-			if(node.hasChild(entry.getKey())) {
-				findBTs(bts, entry.getValue(), str);
+		for(BTNode entry : node.children()) {
+			if(node.hasChild(entry.step())) {
+				findBTs(bts, entry, str);
 				endOfPath = false;
 			}
 		}
