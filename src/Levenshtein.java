@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,30 +49,32 @@ public final class Levenshtein {
 	}
 	
 	private void calculateTable()
-	{
-		int insertionValue;
-		int deletionValue;
-		int substitutionValue;
-		
+	{		
 		for(int i=1; i<=length1; i++) {
 			for(int j=1; j<=length2; j++) {
-				insertionValue = (table[i][j-1]).distance() + 1;
-				deletionValue = (table[i-1][j]).distance() + 1;
-				substitutionValue = (table[i-1][j-1]).distance();
+				Map<String, Integer> values = new HashMap<String, Integer>();
+				values.put("insertion", table[i][j-1].distance()+1);
+				values.put("deletion", table[i-1][j].distance()+1);
+				values.put("substitution", table[i-1][j-1].distance());
 				if(string1.charAt(i-1) != string2.charAt(j-1)) {
-					substitutionValue += 2;
+					values.put("substitution", values.get("substitution")+2);
 				}
 				
-				int smallestValue = smallestValue(insertionValue, deletionValue, substitutionValue);
-				Entry entry;
-				List<Character> steps = new ArrayList<Character>();
-				if(insertionValue == smallestValue) 	{ steps.add('u'); }
-				if(deletionValue == smallestValue) 		{ steps.add('l'); }
-				if(substitutionValue == smallestValue)	{ steps.add('d'); }
-				entry = new Entry(smallestValue, steps);
+				Entry entry = cheapestOperation(values);
 				table[i][j] = entry;
 			}
 		}
+	}
+	
+	private Entry cheapestOperation(Map<String, Integer> values) {
+		int smallestValue = smallestValue(values.get("insertion"), values.get("deletion"), values.get("substitution"));
+		Entry entry;
+		List<Character> steps = new ArrayList<Character>();
+		if(values.get("insertion") == smallestValue) 	{ steps.add('u'); }
+		if(values.get("deletion") == smallestValue) 	{ steps.add('l'); }
+		if(values.get("substitution") == smallestValue)	{ steps.add('d'); }
+		entry = new Entry(smallestValue, steps);
+		return entry;
 	}
 	
 	public String[] strings() {
