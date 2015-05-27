@@ -18,8 +18,10 @@ public class LevenshteinTest {
 	public void setup() {
 		s1 = "a";
 		s2 = "b";
-		l1 = new Levenshtein(s1, s1);
-		l2 = new Levenshtein(s1, s2);
+		l1 = new Levenshtein(s1);
+		l2 = new Levenshtein(s1);
+		l1.comparisonString(s1);
+		l2.comparisonString(s2);
 	}
 
 	@Test
@@ -42,8 +44,10 @@ public class LevenshteinTest {
 		String s1 = "";
 		String s2 = "a";
 		String s3 = "ab";
-		Levenshtein l1 = new Levenshtein(s2, s1);
-		Levenshtein l2 = new Levenshtein(s3, s1);
+		Levenshtein l1 = new Levenshtein(s2);
+		l1.comparisonString(s1);
+		Levenshtein l2 = new Levenshtein(s3);
+		l2.comparisonString(s1);
 		assertEquals(1, l1.editDistance());
 		assertEquals(2, l2.editDistance());
 	}
@@ -53,8 +57,10 @@ public class LevenshteinTest {
 		String s1 = "";
 		String s2 = "a";
 		String s3 = "ab";
-		Levenshtein l1 = new Levenshtein(s1, s2);
-		Levenshtein l2 = new Levenshtein(s1, s3);
+		Levenshtein l1 = new Levenshtein(s1);
+		l1.comparisonString(s2);
+		Levenshtein l2 = new Levenshtein(s1);
+		l2.comparisonString(s3);
 		assertEquals(1, l1.editDistance());
 		assertEquals(2, l2.editDistance());
 	}
@@ -75,7 +81,8 @@ public class LevenshteinTest {
 	public void canGetComplexLevenshteinMatrix() {
 		String s1 = "Intention";
 		String s2 = "Execution";
-		Levenshtein l1 = new Levenshtein(s1, s2);
+		Levenshtein l1 = new Levenshtein(s1);
+		l1.comparisonString(s2);
 		int[][] lv = new int[][]{{0,1,2,3,4,5,6,7,8,9},
 								 {1,2,3,4,5,6,7,6,7,8},
 								 {2,3,4,5,6,7,8,7,8,7},
@@ -103,7 +110,8 @@ public class LevenshteinTest {
 	public void canGetBackTrace() {
 		String s1 = "lucky";
 		String s2 = "unlucky";
-		Levenshtein l1 = new Levenshtein(s1, s2);
+		Levenshtein l1 = new Levenshtein(s1);
+		l1.comparisonString(s2);
 		List<String> eBacktrace = new ArrayList<String>(); 
 		eBacktrace.add("DDDDDUU");
 		List<String> aBacktrace = l1.backtrace();

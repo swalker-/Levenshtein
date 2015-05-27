@@ -9,7 +9,8 @@ public class Project {
 		String s1 = args[0];
 		String s2 = args[1];
 		
-		Levenshtein l = new Levenshtein(s1, s2);
+		Levenshtein l = new Levenshtein(s1);
+		l.comparisonString(s2);
 		printDetails(l);
 	}
 	
