@@ -27,24 +27,21 @@ public final class Levenshtein {
 	
 	private void setupTable()
 	{
-		for(int string1_index=0; string1_index<=baseStringLength; string1_index++) {
+		for(int baseStringIndex=0; baseStringIndex<=baseStringLength; baseStringIndex++) {
 			List<Character> steps = new ArrayList<Character>();
-			if(string1_index > 0) { steps.add('L'); }
-			table[string1_index][0] = new Entry(string1_index, steps);
+			if(baseStringIndex > 0) { steps.add('L'); }
+			table[baseStringIndex][0] = new Entry(baseStringIndex, steps);
 		}
-		for(int string2_index=0; string2_index<=comparisonStringLength; string2_index++) {
+		for(int comparisonStringIndex=0; comparisonStringIndex<=comparisonStringLength; comparisonStringIndex++) {
 			List<Character> steps = new ArrayList<Character>();
-			if(string2_index > 0) { steps.add('U'); }
-			table[0][string2_index] = new Entry(string2_index, steps);
+			if(comparisonStringIndex > 0) { steps.add('U'); }
+			table[0][comparisonStringIndex] = new Entry(comparisonStringIndex, steps);
 		}
 	}
 	
-	private int smallestValue(int v1, int v2, int v3)
+	private int smallestValue(int value1, int value2, int value3)
 	{
-		int smallest = v1;
-		if(v2 < smallest) { smallest = v2; }
-		if(v3 < smallest) { smallest = v3; }
-		return smallest;
+		return Math.min(value1, Math.min(value2,value3));
 	}
 	
 	private void calculateTable()
