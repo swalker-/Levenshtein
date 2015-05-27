@@ -6,33 +6,33 @@ import java.util.Map;
 
 public final class Levenshtein {
 	
-	private final String string1;
-	private final int string1Length;
-	private String string2;
-	private int string2Length;
+	private final String baseString;
+	private final int baseStringLength;
+	private String comparisonString;
+	private int comparisonStringLength;
 	private Entry[][] table;
 	
 	public Levenshtein(String s1) {
-		string1 = s1.toLowerCase();
-		string1Length = string1.length();
+		baseString = s1.toLowerCase();
+		baseStringLength = baseString.length();
 	}
 	
 	public void comparisonString(String s2) {
-		string2 = s2.toLowerCase();
-		string2Length = string2.length();
-		table = new Entry[string1Length+1][string2Length+1];
+		comparisonString = s2.toLowerCase();
+		comparisonStringLength = comparisonString.length();
+		table = new Entry[baseStringLength+1][comparisonStringLength+1];
 		setupTable();
 		calculateTable();
 	}
 	
 	private void setupTable()
 	{
-		for(int string1_index=0; string1_index<=string1Length; string1_index++) {
+		for(int string1_index=0; string1_index<=baseStringLength; string1_index++) {
 			List<Character> steps = new ArrayList<Character>();
 			if(string1_index > 0) { steps.add('L'); }
 			table[string1_index][0] = new Entry(string1_index, steps);
 		}
-		for(int string2_index=0; string2_index<=string2Length; string2_index++) {
+		for(int string2_index=0; string2_index<=comparisonStringLength; string2_index++) {
 			List<Character> steps = new ArrayList<Character>();
 			if(string2_index > 0) { steps.add('U'); }
 			table[0][string2_index] = new Entry(string2_index, steps);
@@ -49,13 +49,13 @@ public final class Levenshtein {
 	
 	private void calculateTable()
 	{		
-		for(int i=1; i<=string1Length; i++) {
-			for(int j=1; j<=string2Length; j++) {
+		for(int i=1; i<=baseStringLength; i++) {
+			for(int j=1; j<=comparisonStringLength; j++) {
 				Map<String, Integer> values = new HashMap<String, Integer>();
 				values.put("insertion", table[i][j-1].distance()+1);
 				values.put("deletion", table[i-1][j].distance()+1);
 				values.put("substitution", table[i-1][j-1].distance());
-				if(string1.charAt(i-1) != string2.charAt(j-1)) {
+				if(baseString.charAt(i-1) != comparisonString.charAt(j-1)) {
 					values.put("substitution", values.get("substitution")+2);
 				}
 				
@@ -77,14 +77,14 @@ public final class Levenshtein {
 	}
 	
 	public String[] strings() {
-		String[] strings = {string1, string2};
+		String[] strings = {baseString, comparisonString};
 		return strings;
 	}
 	
 	public int[][] distanceTable() {
-		int[][] distanceTable = new int[string1Length+1][string2Length+1];
-		for(int i=0; i<=string1Length; i++) {
-			for(int j=0; j<=string2Length; j++) {
+		int[][] distanceTable = new int[baseStringLength+1][comparisonStringLength+1];
+		for(int i=0; i<=baseStringLength; i++) {
+			for(int j=0; j<=comparisonStringLength; j++) {
 				distanceTable[i][j] = (table[i][j]).distance();
 			}
 		}
@@ -92,7 +92,7 @@ public final class Levenshtein {
 	}
 	
 	public int editDistance() {
-		return (table[string1Length][string2Length]).distance();
+		return (table[baseStringLength][comparisonStringLength]).distance();
 	}
 	
 	private void getBT(BTNode node, int row, int col) {
@@ -117,13 +117,13 @@ public final class Levenshtein {
 	
 	public List<String> backtrace() {
 		BTNode root;
-		Entry start = table[string1Length][string2Length];
+		Entry start = table[baseStringLength][comparisonStringLength];
 		List<BTNode> steps = new ArrayList<BTNode>();
 		if(start.hasU()) { steps.add(new BTNode('U', new ArrayList<BTNode>())); }
 		if(start.hasL()) { steps.add(new BTNode('L', new ArrayList<BTNode>())); }
 		if(start.hasD()) { steps.add(new BTNode('D', new ArrayList<BTNode>())); }
 		root = new BTNode(' ', steps);
-		getBT(root, string1Length, string2Length);
+		getBT(root, baseStringLength, comparisonStringLength);
 		
 		BTTree backtrace = new BTTree(root);
 		return backtrace.backtraces();
