@@ -1,7 +1,6 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 
 public final class Levenshtein {
@@ -46,31 +45,33 @@ public final class Levenshtein {
 	
 	private void calculateTable()
 	{		
-		for(int i=1; i<=baseStringLength; i++) {
-			for(int j=1; j<=comparisonStringLength; j++) {
-				Map<String, Integer> values = new HashMap<String, Integer>();
-				values.put("insertion", table[i][j-1].distance()+1);
-				values.put("deletion", table[i-1][j].distance()+1);
-				values.put("substitution", table[i-1][j-1].distance());
-				if(baseString.charAt(i-1) != comparisonString.charAt(j-1)) {
-					values.put("substitution", values.get("substitution")+2);
+		int insertionCost, deletionCost, substitutionCost;
+		OperationCosts costs = new OperationCosts();
+		for(int baseStringIndex=1; baseStringIndex<=baseStringLength; baseStringIndex++) {
+			for(int comparisonStringIndex=1; comparisonStringIndex<=comparisonStringLength; comparisonStringIndex++) {
+				insertionCost = table[baseStringIndex][comparisonStringIndex-1].distance()+1;
+				deletionCost = table[baseStringIndex-1][comparisonStringIndex].distance()+1;
+				substitutionCost = table[baseStringIndex-1][comparisonStringIndex-1].distance();
+				if(!sameCharacter(baseStringIndex, comparisonStringIndex)) {
+					substitutionCost+=2;
 				}
-				
-				Entry entry = cheapestOperation(values);
-				table[i][j] = entry;
+				costs.set(insertionCost, deletionCost, substitutionCost);
+				table[baseStringIndex][comparisonStringIndex] = cheapestOperation(costs);
 			}
 		}
 	}
 	
-	private Entry cheapestOperation(Map<String, Integer> values) {
-		int smallestValue = smallestValue(values.get("insertion"), values.get("deletion"), values.get("substitution"));
-		Entry entry;
+	private boolean sameCharacter(int baseStringIndex, int comparisonStringIndex) {
+		return baseString.charAt(baseStringIndex-1) == comparisonString.charAt(comparisonStringIndex-1);
+	}
+	
+	private Entry cheapestOperation(OperationCosts costs) {
+		int smallestValue = smallestValue(costs.insertion(), costs.deletion(), costs.substitution());
 		List<Character> steps = new ArrayList<Character>();
-		if(values.get("insertion") == smallestValue) 	{ steps.add('U'); }
-		if(values.get("deletion") == smallestValue) 	{ steps.add('L'); }
-		if(values.get("substitution") == smallestValue)	{ steps.add('D'); }
-		entry = new Entry(smallestValue, steps);
-		return entry;
+		if(costs.insertion() == smallestValue) 		{ steps.add('U'); }
+		if(costs.deletion() == smallestValue) 		{ steps.add('L'); }
+		if(costs.substitution() == smallestValue)	{ steps.add('D'); }
+		return new Entry(smallestValue, steps);
 	}
 	
 	public String[] strings() {
