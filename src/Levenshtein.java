@@ -10,16 +10,24 @@ public final class Levenshtein {
 	private String comparisonString;
 	private int comparisonStringLength;
 	private Entry[][] table;
+	private boolean calledDistanceTable;
+	private int[][] distanceTable;
+	private boolean calledBacktrace;
+	BTTree backtrace;
 	
 	public Levenshtein(String s1) {
 		baseString = s1.toLowerCase();
 		baseStringLength = baseString.length();
+		comparisonString = "";
+		comparisonStringLength = 0;
 	}
 	
 	public void comparisonString(String s2) {
 		comparisonString = s2.toLowerCase();
 		comparisonStringLength = comparisonString.length();
 		table = new Entry[baseStringLength+1][comparisonStringLength+1];
+		calledDistanceTable = false;
+		calledBacktrace = false;
 		setupTable();
 		calculateTable();
 	}
@@ -80,11 +88,15 @@ public final class Levenshtein {
 	}
 	
 	public int[][] distanceTable() {
-		int[][] distanceTable = new int[baseStringLength+1][comparisonStringLength+1];
-		for(int i=0; i<=baseStringLength; i++) {
-			for(int j=0; j<=comparisonStringLength; j++) {
-				distanceTable[i][j] = (table[i][j]).distance();
+		if (!calledDistanceTable) {
+			int[][] distanceTable = new int[baseStringLength+1][comparisonStringLength+1];
+			for(int baseStringIndex=0; baseStringIndex<=baseStringLength; baseStringIndex++) {
+				for(int comparisonStringIndex=0; comparisonStringIndex<=comparisonStringLength; comparisonStringIndex++) {
+					distanceTable[baseStringIndex][comparisonStringIndex] = (table[baseStringIndex][comparisonStringIndex]).distance();
+				}
 			}
+			calledDistanceTable = true;
+			this.distanceTable = distanceTable;
 		}
 		return distanceTable;
 	}
@@ -114,16 +126,20 @@ public final class Levenshtein {
 	}
 	
 	public List<String> backtrace() {
-		BTNode root;
-		Entry start = table[baseStringLength][comparisonStringLength];
-		List<BTNode> steps = new ArrayList<BTNode>();
-		if(start.hasU()) { steps.add(new BTNode('U', new ArrayList<BTNode>())); }
-		if(start.hasL()) { steps.add(new BTNode('L', new ArrayList<BTNode>())); }
-		if(start.hasD()) { steps.add(new BTNode('D', new ArrayList<BTNode>())); }
-		root = new BTNode(' ', steps);
-		getBT(root, baseStringLength, comparisonStringLength);
-		
-		BTTree backtrace = new BTTree(root);
+		if (!calledBacktrace) {
+			BTNode root;
+			Entry start = table[baseStringLength][comparisonStringLength];
+			List<BTNode> steps = new ArrayList<BTNode>();
+			if(start.hasU()) { steps.add(new BTNode('U', new ArrayList<BTNode>())); }
+			if(start.hasL()) { steps.add(new BTNode('L', new ArrayList<BTNode>())); }
+			if(start.hasD()) { steps.add(new BTNode('D', new ArrayList<BTNode>())); }
+			root = new BTNode(' ', steps);
+			getBT(root, baseStringLength, comparisonStringLength);
+			
+			BTTree backtrace = new BTTree(root);
+			calledBacktrace = true;
+			this.backtrace = backtrace;
+		}
 		return backtrace.backtraces();
 	}
 	

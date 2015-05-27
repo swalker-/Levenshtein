@@ -4,9 +4,12 @@ import java.util.List;
 
 public class BTTree {
 	private BTNode root;
+	private boolean calledBacktraces;
+	private List<String> backtraces;
 	
 	public BTTree(BTNode root) {
 		this.root = root;
+		calledBacktraces = false;
 	}
 	
 	public BTNode root() {
@@ -14,9 +17,13 @@ public class BTTree {
 	}	
 	
 	public List<String> backtraces() {
-		List<String> bts = new ArrayList<String>();
-		findBTs(bts, root, "");
-		return bts;
+		if (!calledBacktraces) {
+			List<String> bts = new ArrayList<String>();
+			findBTs(bts, root, "");
+			backtraces = bts;
+			calledBacktraces = true;
+		}
+		return backtraces;
 	}
 	
 	private void findBTs(List<String> bts, BTNode node, String str) {
