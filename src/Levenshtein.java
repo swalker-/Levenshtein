@@ -46,7 +46,7 @@ public final class Levenshtein {
 		}
 	}
 	
-	private int smallestValue(int value1, int value2, int value3)
+	private int minimumCost(int value1, int value2, int value3)
 	{
 		return Math.min(value1, Math.min(value2,value3));
 	}
@@ -74,12 +74,12 @@ public final class Levenshtein {
 	}
 	
 	private Entry cheapestOperation(OperationCosts costs) {
-		int smallestValue = smallestValue(costs.insertion(), costs.deletion(), costs.substitution());
+		int minimumCost = minimumCost(costs.insertion(), costs.deletion(), costs.substitution());
 		List<Character> steps = new ArrayList<Character>();
-		if(costs.insertion() == smallestValue) 		{ steps.add('U'); }
-		if(costs.deletion() == smallestValue) 		{ steps.add('L'); }
-		if(costs.substitution() == smallestValue)	{ steps.add('D'); }
-		return new Entry(smallestValue, steps);
+		if(costs.insertion() == minimumCost) 		{ steps.add('U'); }
+		if(costs.deletion() == minimumCost) 		{ steps.add('L'); }
+		if(costs.substitution() == minimumCost)	{ steps.add('D'); }
+		return new Entry(minimumCost, steps);
 	}
 	
 	public String[] strings() {
