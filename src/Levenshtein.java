@@ -10,9 +10,7 @@ public final class Levenshtein {
 	private String comparisonString;
 	private int comparisonStringLength;
 	private Entry[][] table;
-	private boolean calledDistanceTable;
 	private int[][] distanceTable;
-	private boolean calledBacktrace;
 	BTTree backtrace;
 	
 	public Levenshtein(String s1) {
@@ -26,8 +24,8 @@ public final class Levenshtein {
 		comparisonString = s2.toLowerCase();
 		comparisonStringLength = comparisonString.length();
 		table = new Entry[baseStringLength+1][comparisonStringLength+1];
-		calledDistanceTable = false;
-		calledBacktrace = false;
+		distanceTable = null;
+		backtrace = null;
 		setupTable();
 		calculateTable();
 	}
@@ -88,14 +86,13 @@ public final class Levenshtein {
 	}
 	
 	public int[][] distanceTable() {
-		if (!calledDistanceTable) {
+		if (distanceTable == null) {
 			int[][] distanceTable = new int[baseStringLength+1][comparisonStringLength+1];
 			for(int baseStringIndex=0; baseStringIndex<=baseStringLength; baseStringIndex++) {
 				for(int comparisonStringIndex=0; comparisonStringIndex<=comparisonStringLength; comparisonStringIndex++) {
 					distanceTable[baseStringIndex][comparisonStringIndex] = (table[baseStringIndex][comparisonStringIndex]).distance();
 				}
 			}
-			calledDistanceTable = true;
 			this.distanceTable = distanceTable;
 		}
 		return distanceTable;
@@ -126,7 +123,7 @@ public final class Levenshtein {
 	}
 	
 	public List<String> backtrace() {
-		if (!calledBacktrace) {
+		if (backtrace == null) {
 			BTNode root;
 			Entry start = table[baseStringLength][comparisonStringLength];
 			List<BTNode> steps = new ArrayList<BTNode>();
@@ -137,7 +134,6 @@ public final class Levenshtein {
 			getBT(root, baseStringLength, comparisonStringLength);
 			
 			BTTree backtrace = new BTTree(root);
-			calledBacktrace = true;
 			this.backtrace = backtrace;
 		}
 		return backtrace.backtraces();
